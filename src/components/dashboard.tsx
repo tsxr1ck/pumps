@@ -38,7 +38,7 @@ export default function Dashboard({
   return (
     <div className="px-4 py-5">
       {/* Main Cash In Hand Card */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-red-600 via-red-500 to-red-600 p-5 mb-4 shadow-2xl shadow-red-500/20">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-br from-red-600 via-red-500 to-red-600 p-5 mb-4 shadow-2xl shadow-red-500/20">
         <div className="absolute top-0 right-0 w-40 h-40 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
         

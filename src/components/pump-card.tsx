@@ -61,10 +61,10 @@ export default function PumpCard({ pumpNumber, pump, prices, onUpdate, calculate
   return (
     <div className="bg-slate-900/90 backdrop-blur border border-slate-800 rounded-2xl overflow-hidden">
       {/* Pump Header */}
-      <div className="bg-gradient-to-r from-slate-800 to-slate-800/50 px-5 py-4 border-b border-slate-700/50">
+      <div className="bg-linear-to-r from-slate-800 to-slate-800/50 px-5 py-4 border-b border-slate-700/50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg">
+            <div className="w-12 h-12 rounded-xl bg-linear-to-br from-slate-700 to-slate-600 flex items-center justify-center shadow-lg">
               <Fuel className="w-6 h-6 text-slate-300" />
             </div>
             <div>
@@ -81,7 +81,7 @@ export default function PumpCard({ pumpNumber, pump, prices, onUpdate, calculate
 
       <div className="p-4 space-y-4">
         {/* Regular Fuel Section */}
-        <div className="bg-gradient-to-br from-slate-800/50 to-slate-700/20 border border-slate-700/30 rounded-xl p-4">
+        <div className="bg-linear-to-br from-slate-800/50 to-slate-700/20 border border-slate-700/30 rounded-xl p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-slate-400 shadow-lg shadow-slate-400/50" />
@@ -121,7 +121,7 @@ export default function PumpCard({ pumpNumber, pump, prices, onUpdate, calculate
         </div>
 
         {/* Premium Fuel Section */}
-        <div className="bg-gradient-to-br from-red-950/50 to-red-900/20 border border-red-800/30 rounded-xl p-4">
+        <div className="bg-linear-to-br from-red-950/50 to-red-900/20 border border-red-800/30 rounded-xl p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500 shadow-lg shadow-red-500/50" />

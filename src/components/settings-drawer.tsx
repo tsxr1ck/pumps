@@ -89,7 +89,7 @@ export default function SettingsDrawer({ open, onClose, prices, onUpdatePrices }
               </p>
 
               {/* Regular Price */}
-              <div className="bg-gradient-to-br from-slate-800/50 to-slate-700/20 border border-slate-700/30 rounded-xl p-4">
+              <div className="bg-linear-to-br from-slate-800/50 to-slate-700/20 border border-slate-700/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-slate-400" />
                   <Label className="text-slate-300 font-semibold">Combustible Regular</Label>
@@ -109,7 +109,7 @@ export default function SettingsDrawer({ open, onClose, prices, onUpdatePrices }
               </div>
 
               {/* Premium Price */}
-              <div className="bg-gradient-to-br from-red-950/50 to-red-900/20 border border-red-800/30 rounded-xl p-4">
+              <div className="bg-linear-to-br from-red-950/50 to-red-900/20 border border-red-800/30 rounded-xl p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-red-500" />
                   <Label className="text-red-400 font-semibold">Combustible Premium</Label>
@@ -131,7 +131,7 @@ export default function SettingsDrawer({ open, onClose, prices, onUpdatePrices }
               {/* Save Button */}
               <Button
                 onClick={handleSave}
-                className="w-full h-14 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold text-lg rounded-xl shadow-lg shadow-red-500/20"
+                className="w-full h-14 bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-semibold text-lg rounded-xl shadow-lg shadow-red-500/20"
               >
                 <Save className="w-5 h-5 mr-2" />
                 Guardar Precios
