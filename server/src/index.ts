@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import { createServer } from "http";
 import { Server as SocketIOServer } from "socket.io";
-import dotenv from "dotenv";
+import { env } from "./lib/env.js";
 import { verifyAccessToken } from "./lib/tokens.js";
 
 // Routes
@@ -21,13 +21,14 @@ import reportRoutes from "./routes/reports.js";
 // Realtime
 import { startSubscriber } from "./realtime/subscriber.js";
 
-dotenv.config();
+// env is validated and loaded via ./lib/env.ts
 
 const app = express();
 const server = createServer(app);
+const corsOrigins = env.CORS_ORIGINS.split(",").map((s) => s.trim());
 const io = new SocketIOServer(server, {
   cors: {
-    origin: process.env.CORS_ORIGINS?.split(",") || "*",
+    origin: corsOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -36,7 +37,7 @@ const io = new SocketIOServer(server, {
 // Middleware
 app.use(
   cors({
-    origin: process.env.CORS_ORIGINS?.split(",") || "*",
+    origin: corsOrigins,
     credentials: true,
   }),
 );
@@ -96,7 +97,6 @@ io.on("connection", (socket) => {
 startSubscriber(io);
 
 // Start server
-const PORT = process.env.PORT || 7001;
-server.listen(PORT, () => {
-  console.log(`Pumps API server listening on port ${PORT}`);
+server.listen(env.PORT, () => {
+  console.log(`Pumps API server listening on port ${env.PORT}`);
 });

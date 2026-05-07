@@ -1,17 +1,26 @@
 import { Router } from "express";
 import bcryptjs from "bcryptjs";
+import rateLimit from "express-rate-limit";
 import { db } from "../lib/db.js";
 import { signAccessToken, signRefreshToken } from "../lib/tokens.js";
 import { z } from "zod";
 
 const router = Router();
 
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10, // 10 attempts per window per IP
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Demasiados intentos de inicio de sesión. Intenta de nuevo en 15 minutos." },
+});
+
 const loginSchema = z.object({
   numericId: z.number().int().positive(),
   pin: z.string().min(4).max(6),
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", loginLimiter, async (req, res) => {
   try {
     const parsed = loginSchema.parse(req.body);
     const result = await db.query(

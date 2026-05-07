@@ -251,4 +251,55 @@ router.get('/:id/transactions', requireAuth, async (req, res) => {
   }
 });
 
+// POST /api/withdrawals/:id/delete - delete a withdrawal (only if pending or from current shift)
+router.post('/:id/delete', requireAuth, requireRole('Dispatcher', 'Manager'), async (req, res) => {
+  const client = await db.getClient();
+  try {
+    const { id } = req.params;
+
+    await client.query('BEGIN');
+
+    // Only allow deleting pending withdrawals
+    const wResult = await client.query(
+      `SELECT id, status, shift_id FROM withdrawals WHERE id = $1`,
+      [id]
+    );
+
+    if (wResult.rowCount === 0) {
+      await client.query('ROLLBACK');
+      res.status(404).json({ error: 'Withdrawal not found' });
+      return;
+    }
+
+    const withdrawal = wResult.rows[0];
+    if (withdrawal.status === 'approved') {
+      await client.query('ROLLBACK');
+      res.status(400).json({ error: 'Cannot delete an approved withdrawal' });
+      return;
+    }
+
+    // Unlink any covered transactions
+    await client.query(
+      `UPDATE transactions SET withdrawal_id = NULL WHERE withdrawal_id = $1`,
+      [id]
+    );
+
+    // Delete the withdrawal
+    await client.query(`DELETE FROM withdrawals WHERE id = $1`, [id]);
+
+    await client.query('COMMIT');
+
+    const { publishEvent } = await import('../realtime/publisher.js');
+    await publishEvent('withdrawal:deleted', { withdrawalId: id, shiftId: withdrawal.shift_id });
+
+    res.json({ success: true });
+  } catch (err) {
+    await client.query('ROLLBACK');
+    console.error('Delete withdrawal error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    client.release();
+  }
+});
+
 export default router;

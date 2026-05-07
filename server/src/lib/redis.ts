@@ -1,12 +1,7 @@
 import { Redis } from "ioredis";
-import dotenv from "dotenv";
-import { fileURLToPath } from "url";
-import { dirname, resolve } from "path";
+import { env } from "./env.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-dotenv.config({ path: resolve(__dirname, "../../.env") });
-
-const redisUrl = process.env.REDIS_URL || "redis://localhost:6379";
+const redisUrl = env.REDIS_URL;
 
 // Parse URL to extract auth explicitly (ioredis can drop password when options object is also passed)
 function parseRedisUrl(url: string) {
@@ -24,7 +19,7 @@ function parseRedisUrl(url: string) {
 
 const { host, port, password } = parseRedisUrl(redisUrl);
 console.log(
-  `Redis config: host=${host}, port=${port}, password=${password ? "***" + password.slice(-3) : "NONE"}, url=${redisUrl}`,
+  `Redis config: host=${host}, port=${port}, auth=${password ? "yes" : "no"}`,
 );
 
 export const redis = new Redis({

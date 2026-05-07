@@ -146,10 +146,17 @@ export default function PumpView() {
     }
   }, [shift?.id]);
 
-  const removeWithdrawal = useCallback((id: string) => {
-    setWithdrawals((prev) => prev.filter((w) => w.id !== id));
-    setTransactions((prev) => prev.map((t) => t.withdrawalId === id ? { ...t, withdrawalId: null } : t));
-  }, []);
+  const removeWithdrawal = useCallback(async (id: string) => {
+    if (!shift?.id) return;
+    try {
+      await postJson(`/withdrawals/${id}/delete`, {});
+      setWithdrawals((prev) => prev.filter((w) => w.id !== id));
+      setTransactions((prev) => prev.map((t) => t.withdrawalId === id ? { ...t, withdrawalId: null } : t));
+      toast.success('Retiro eliminado');
+    } catch (err: any) {
+      toast.error(err.message || 'Error eliminando retiro');
+    }
+  }, [shift?.id]);
 
   const calculateLiters = (initial: string, current: string): number => Math.max(0, (parseFloat(current) || 0) - (parseFloat(initial) || 0));
 
